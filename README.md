@@ -1,2 +1,2 @@
 # Wordpress
-This for wordpress custom shortgood
+This for wordpress custom shortcode
