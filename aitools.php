@@ -185,7 +185,7 @@ function ai_tools_inline_styles_with_navbar() {
         justify-content: center;
         gap: 15px;
         margin-bottom: 20px;
-   }
+        }
 
 .filter-btn {
     padding: 5px 10px;
