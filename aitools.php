@@ -1,4 +1,4 @@
-//this code for AI Tools Custom shortcode 
+// AI tools feature image add
 function my_jquery_shortcode_with_navigation() {
     wp_enqueue_script('jquery');
 
@@ -31,12 +31,11 @@ function my_jquery_shortcode_with_navigation() {
                                 $('.prev-btn').prop('disabled', true);
                             }
 
-                          if (response.has_next) {
+                            if (response.has_next) {
                                 $('.next-btn').prop('disabled', false);
-                           } else {
+                            } else {
                                 $('.next-btn').prop('disabled', true);
                             }
-               
                         }
                     }
                 });
@@ -114,13 +113,11 @@ function my_jquery_shortcode_with_navigation() {
 }
 add_shortcode('ai_tools_post_list', 'my_jquery_shortcode_with_navigation');
 
-
-
 function filter_ai_tools() {
     $filters = isset($_POST['filters']) ? $_POST['filters'] : [];
     $category = isset($filters['category']) ? sanitize_text_field($filters['category']) : 'all';
     $search = isset($filters['search']) ? sanitize_text_field($filters['search']) : '';
-    $page = isset($_POST['page']) ? intval($_POST['page']) : 1; 
+    $page = isset($_POST['page']) ? intval($_POST['page']) : 1;
 
     $args = [
         'post_type' => 'ai',
@@ -145,8 +142,17 @@ function filter_ai_tools() {
     if ($query->have_posts()) {
         while ($query->have_posts()) {
             $query->the_post();
-            $response['html'] .= '<div class="ai-tool-card">';
-            $response['html'] .= '<div class="icon"><i class="fas fa-book"></i></div>';
+
+            $thumbnail_url = get_the_post_thumbnail_url(get_the_ID(), 'medium');
+            if ($thumbnail_url) {
+                $response['html'] .= '<div class="ai-tool-card">';
+                $response['html'] .= '<div class="featured-image"><img src="' . esc_url($thumbnail_url) . '" alt="' . esc_attr(get_the_title()) . '"></div>';
+            } else {
+                // Fallback in case there's no featured image
+                $response['html'] .= '<div class="ai-tool-card">';
+                $response['html'] .= '<div class="featured-image"><img src="' . esc_url(get_template_directory_uri() . '/assets/images/default-thumbnail.jpg') . '" alt="Default Image"></div>';
+            }
+
             $response['html'] .= '<h3>' . get_the_title() . '</h3>';
             $response['html'] .= '<p>' . get_the_excerpt() . '</p>';
             $response['html'] .= '<a href="' . get_permalink() . '" class="button">Go to ' . get_the_title() . '</a>';
@@ -165,6 +171,7 @@ function filter_ai_tools() {
 }
 add_action('wp_ajax_filter_ai_tools', 'filter_ai_tools');
 add_action('wp_ajax_nopriv_filter_ai_tools', 'filter_ai_tools');
+
 function ai_tools_inline_styles_with_navbar() {
     echo "
     <style>
@@ -185,7 +192,7 @@ function ai_tools_inline_styles_with_navbar() {
         justify-content: center;
         gap: 15px;
         margin-bottom: 20px;
-        }
+   }
 
 .filter-btn {
     padding: 5px 10px;
@@ -337,8 +344,15 @@ function ai_tools_inline_styles_with_navbar() {
 
      display: none;
 }
+.ai-tool-card .featured-image {
+    margin-bottom: 15px;
+}
 
-
+.ai-tool-card .featured-image img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 10px;
+}
 
     </style>
     ";
