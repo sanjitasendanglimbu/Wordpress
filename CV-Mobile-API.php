@@ -1,6 +1,6 @@
 <?php
 /**
- * Plugin Name: Dynamic Taxonomy REST API with Optimizations
+ * Plugin Name: chimpvine Mobile API
  * Description: Custom REST API to fetch taxonomy terms and filter posts with optimized performance.
  * Version: 1.3
  * Author: Your Name
