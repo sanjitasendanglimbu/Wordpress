@@ -9,14 +9,14 @@
 // Hook into REST API initialization
 add_action('rest_api_init', function () {
     // Register a GET route to fetch taxonomy terms
-    register_rest_route('elearning/v1', '/taxonomy-terms', [
+    register_rest_route('mobileapp/v1', '/taxonomy-terms', [
         'methods' => 'GET',
         'callback' => 'get_optimized_taxonomy_terms',
         'permission_callback' => '__return_true',
     ]);
 
     // Register a POST route for filtering posts
-    register_rest_route('elearning/v1', '/filter-posts', [
+    register_rest_route('mobileapp/v1', '/filter-posts', [
         'methods' => 'POST',
         'callback' => 'optimized_filter_posts',
         'permission_callback' => '__return_true',
@@ -99,7 +99,7 @@ function optimized_filter_posts($request) {
 
     // Query arguments
     $query_args = [
-        'post_type'      => 'e-learning',
+        'post_type'      => 'posts',
         'post_status'    => 'publish',
         'posts_per_page' => $posts_per_page,
         'paged'          => $page,
@@ -154,5 +154,10 @@ function optimized_filter_posts($request) {
     return rest_ensure_response([
         'success' => true,
         'data' => $posts,
+        'meta'    => [
+            'total_posts' => $query->found_posts,
+            'total_pages' => $query->max_num_pages,
+            'current_page' => $page,
+        ],
     ]);
 }
