@@ -70,7 +70,7 @@ function get_optimized_taxonomy_terms($request) {
             return [
                 'termId' => $term->term_id,
                 'name'   => $term->name,
-                'image'  => get_field('image', "{$taxonomy}_{$term->term_id}"), // ACF field
+                'image'  => get_field('taxanomy_image', "{$taxonomy}_{$term->term_id}"), // ACF field
             ];
         }, $terms);
 
